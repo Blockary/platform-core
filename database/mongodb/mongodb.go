@@ -9,8 +9,11 @@ import (
 
 var client *mongo.Client
 
+var mongo_hostname string
+var mongo_port string
+
 func Connect() {
-	mongoURI := "mongodb://localhost:27017"
+	mongoURI := "mongodb://" + mongo_hostname + ":" + mongo_port
 	clientOptions := options.Client().ApplyURI(mongoURI)
 
 	c, err := mongo.Connect(clientOptions)
