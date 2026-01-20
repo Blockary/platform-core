@@ -3,10 +3,10 @@ module github.com/Blockary/platform-core
 go 1.24
 
 require (
+	github.com/google/uuid v1.6.0
+    github.com/nats-io/nats.go v1.48.0
 	github.com/golang/snappy v1.0.0 // indirect
-	github.com/google/uuid v1.6.0 // indirect
 	github.com/klauspost/compress v1.18.0 // indirect
-	github.com/nats-io/nats.go v1.48.0 // indirect
 	github.com/nats-io/nkeys v0.4.11 // indirect
 	github.com/nats-io/nuid v1.0.1 // indirect
 	github.com/xdg-go/pbkdf2 v1.0.0 // indirect
