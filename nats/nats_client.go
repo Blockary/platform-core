@@ -27,6 +27,7 @@ func CreateSteam(name string, subject string) nats.JetStreamContext {
 		Retention: nats.LimitsPolicy,
 	})
 
+	log.Println("Created NATS JetStream ", name)
 	return js
 }
 
