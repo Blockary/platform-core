@@ -10,24 +10,34 @@ var client *nats.Conn
 
 func Connect(url string) {
 	var err error
-	client, err = nats.Connect(url) // assign to package-level variable
+	client, err = nats.Connect(url)
 	if err != nil {
 		log.Fatal("Failed to connect to NATS:", err)
 	}
 	log.Println("Connected to NATS at", url)
 }
 
-func CreateSteam(name string, subject string) nats.JetStreamContext {
-	js, _ := client.JetStream()
+func CreateStream(name string, subject string) nats.JetStreamContext {
+	if client == nil || client.IsClosed() {
+		log.Fatal("NATS client is not connected")
+	}
 
-	js.AddStream(&nats.StreamConfig{
+	js, err := client.JetStream()
+	if err != nil {
+		log.Fatal("Failed to create JetStream context:", err)
+	}
+	
+	stream, err := js.AddStream(&nats.StreamConfig{
 		Name:      name,
 		Subjects:  []string{subject + ".>"},
 		Storage:   nats.FileStorage,
 		Retention: nats.LimitsPolicy,
 	})
+	if err != nil {
+		log.Fatal("Failed to add stream:", err)
+	}
 
-	log.Println("Created NATS JetStream ", name)
+	log.Printf("Created NATS JetStream: %s (stream info: %+v)\n", name, stream)
 	return js
 }
 
