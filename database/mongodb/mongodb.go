@@ -41,3 +41,15 @@ func GetCollection(dbName, collectionName string) (*mongo.Collection, error) {
 
 	return collection, nil
 }
+
+func GetDatabase(dbName string) (*mongo.Database, error) {
+	if client == nil {
+		return nil, fmt.Errorf("MongoDB client is not initialized")
+	}
+
+	database := client.Database(dbName)
+	if database == nil {
+		return nil, fmt.Errorf("failed to get database: %s", dbName)
+	}
+	return database, nil
+}
