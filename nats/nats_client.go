@@ -8,12 +8,13 @@ import (
 
 var client *nats.Conn
 
-func Connect() {
-	natsClient, err := nats.Connect("nats://localhost:4222")
+func Connect(url string) {
+	var err error
+	client, err = nats.Connect(url) // assign to package-level variable
 	if err != nil {
-		log.Fatal(err)
+		log.Fatal("Failed to connect to NATS:", err)
 	}
-	defer natsClient.Close()
+	log.Println("Connected to NATS at", url)
 }
 
 func CreateSteam(name string, subject string) nats.JetStreamContext {
@@ -27,4 +28,11 @@ func CreateSteam(name string, subject string) nats.JetStreamContext {
 	})
 
 	return js
+}
+
+func Close() {
+	if client != nil && !client.IsClosed() {
+		client.Close()
+		log.Println("NATS connection closed")
+	}
 }
